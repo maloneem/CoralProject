@@ -1,0 +1,349 @@
+---
+title: "Preliminary Coral Report"
+author: "Jason Chari and Elizabeth Maloney"
+date: "June 9, 2016"
+output: pdf_document
+---
+
+```{r}
+setwd("~/Desktop/Coral Project Data/ALL DCM")
+```
+
+Included in this document:\
+• Bin plots\
+• PCA at different bin sizes\
+• Correlation plot\
+\
+**1. Read in Data**
+
+```{r}
+setwd("~/Desktop/Coral Project Data/ALL DCM")
+#Read in Data
+filenames = c("PAL003DCM1.csv","PAL006DCM1.csv","PAL007DCM1.csv","PAL014DCM1.csv","PAL015DCM1.csv",
+              "PAL017DCM1.csv","PAL018DCM1.csv","PAL019D3.csv","PAL029DCM1.csv","PAL042D2.csv","PAL043DCM1.csv",
+              "PAL044DCM1.csv","PAL045DCM1.csv","PAL048DCM1.csv","PAL050D1.csv","PAL052D1.csv",
+              "PAL052D2.csv","PAL130D1.csv","PAL131D1.csv","PAL133D1.csv","PAL134D1.csv","PAL137DCM1.csv",
+              "PAL227D1.csv","PAL247DCM1.csv","PAL248D1.csv","PAL250D1.csv","PAL250D2.csv","PAL252DCM1.csv",
+              "PAL270D1.csv","PAL299DCM1.csv","PAL300D1.csv","PAL301D1.csv","PAL302D1.csv","PAL306D1.csv","PAL307DCM1.csv",
+              "PAL332D1.csv","PAL333D1.csv","PAL334D1.csv","PAL340D1.csv","PAL355D1.csv","PAL356D1.csv","PAL359D1.csv",
+              "PAL362D1.csv","PAL374DCM1.csv","PAL375D1.csv","PAL378DCM1.csv","PAL379DCM1.csv","PAL382DCM1.csv")
+
+
+PAL003DCM1 = read.csv(filenames[1],header=FALSE)
+PAL006DCM1 = read.csv(filenames[2],header=FALSE)
+PAL007DCM1 = read.csv(filenames[3],header=FALSE)
+PAL014DCM1 = read.csv(filenames[4],header=FALSE)
+PAL015DCM1 = read.csv(filenames[5],header=FALSE)
+PAL017DCM1 = read.csv(filenames[6],header=FALSE)
+PAL018DCM1 = read.csv(filenames[7],header=FALSE)
+PAL019DCM1 = read.csv(filenames[8],header=FALSE)
+PAL029DCM1 = read.csv(filenames[9],header=FALSE)
+PAL042DCM1 = read.csv(filenames[10],header=FALSE)
+PAL043DCM1 = read.csv(filenames[11],header=FALSE)
+PAL044DCM1 = read.csv(filenames[12],header=FALSE)
+PAL045DCM1 = read.csv(filenames[13],header=FALSE)
+PAL048DCM1 = read.csv(filenames[14],header=FALSE)
+PAL050DCM1 = read.csv(filenames[15],header=FALSE)
+PAL052DCM1 = read.csv(filenames[16],header=FALSE)
+#PAL052DCM2 = read.csv(filenames[17],header=FALSE) Broad peak @ 15.8 looked less like rest of data. Use D1.
+PAL130DCM1 = read.csv(filenames[18],header=FALSE)
+PAL131DCM1 = read.csv(filenames[19],header=FALSE)
+PAL133DCM1 = read.csv(filenames[20],header=FALSE)
+PAL134DCM1 = read.csv(filenames[21],header=FALSE)
+PAL137DCM1 = read.csv(filenames[22],header=FALSE)
+PAL227DCM1 = read.csv(filenames[23],header=FALSE)
+PAL247DCM1 = read.csv(filenames[24],header=FALSE)
+PAL248DCM1 = read.csv(filenames[25],header=FALSE)
+PAL250DCM1 = read.csv(filenames[26],header=FALSE)
+#PAL250D2 = read.csv(filenames[27],header=FALSE)  Graph 250D2 looked the same as 052D2. Use D1.
+PAL252DCM1 = read.csv(filenames[28],header=FALSE)
+PAL270DCM1 = read.csv(filenames[29],header=FALSE)
+PAL299DCM1 = read.csv(filenames[30],header=FALSE)
+PAL300DCM1 = read.csv(filenames[31],header=FALSE)
+PAL301DCM1 = read.csv(filenames[32],header=FALSE)
+PAL302DCM1 = read.csv(filenames[33],header=FALSE)
+PAL306DCM1 = read.csv(filenames[34],header=FALSE)
+PAL307DCM1 = read.csv(filenames[35],header=FALSE)
+PAL332DCM1 = read.csv(filenames[36],header=FALSE)
+PAL333DCM1 = read.csv(filenames[37],header=FALSE)
+PAL334DCM1 = read.csv(filenames[38],header=FALSE)
+PAL340DCM1 = read.csv(filenames[39],header=FALSE)
+PAL355DCM1 = read.csv(filenames[40],header=FALSE)
+PAL356DCM1 = read.csv(filenames[41],header=FALSE)
+PAL359DCM1 = read.csv(filenames[42],header=FALSE)
+PAL362DCM1 = read.csv(filenames[43],header=FALSE)
+PAL374DCM1 = read.csv(filenames[44],header=FALSE)
+PAL375DCM1 = read.csv(filenames[45],header=FALSE)
+PAL378DCM1 = read.csv(filenames[46],header=FALSE)
+PAL379DCM1 = read.csv(filenames[47],header=FALSE)
+PAL382DCM1 = read.csv(filenames[48],header=FALSE)
+```
+
+
+**2. Use trap function to generate trapezoidal area**
+```{r}
+trap <- function(intens, delta) { 
+  intens1 <- rep(intens)
+  intens1 = intens1[-1]
+  intens = intens[1:length(intens)-1]
+  trapArea = (intens + intens1)*delta/2
+  return(c(as.numeric(trapArea), 0))
+}
+
+norm <- function(trapArea){
+  tot = sum(trapArea)
+  return(trapArea/tot)
+}
+DELTA = 0.00033333333333
+```
+
+**3. Generate dataframe**
+
+```{r}
+#Process as dataframe - CHANGE TO AS.NUMERIC
+dataframe = rbind(
+  #S. glaucum clade F
+  c(003,"DCM","F", norm(trap(as.numeric(PAL003DCM1[,2]), DELTA))),
+  c(006,"DCM","F", norm(trap(as.numeric(PAL006DCM1[-77002,2]), DELTA))),
+  c(007,"DCM","F", norm(trap(as.numeric(PAL007DCM1[,2]), DELTA))),
+  c(014,"DCM","F", norm(trap(as.numeric(PAL014DCM1[-77002,2]), DELTA))),
+  c(015,"DCM","F", norm(trap(as.numeric(PAL015DCM1[-77002,2]), DELTA))),
+  c(017,"DCM","F", norm(trap(as.numeric(PAL017DCM1[,2]), DELTA))),
+  c(018,"DCM","F", norm(trap(as.numeric(PAL018DCM1[,2]), DELTA))),
+  c(043,"DCM","F", norm(trap(as.numeric(PAL043DCM1[,2]), DELTA))),
+  c(044,"DCM","F", norm(trap(as.numeric(PAL044DCM1[-77002,2]), DELTA))),
+  c(048,"DCM","F", norm(trap(as.numeric(PAL048DCM1[,2]), DELTA))),
+  c(050,"DCM","F", norm(trap(as.numeric(PAL050DCM1[,2]), DELTA))),
+  c(130,"DCM","F", norm(trap(as.numeric(PAL130DCM1[,2]), DELTA))),
+  c(131,"DCM","F", norm(trap(as.numeric(PAL131DCM1[,2]), DELTA))),
+  c(133,"DCM","F", norm(trap(as.numeric(PAL133DCM1[-77002,2]), DELTA))),
+  c(134,"DCM","F", norm(trap(as.numeric(PAL134DCM1[,2]), DELTA))),
+  c(248,"DCM","F", norm(trap(as.numeric(PAL248DCM1[,2]), DELTA))),
+  c(270,"DCM","F", norm(trap(as.numeric(PAL270DCM1[,2]), DELTA))),
+  c(302,"DCM","F", norm(trap(as.numeric(PAL302DCM1[-77002,2]), DELTA))),
+  c(333,"DCM","F", norm(trap(as.numeric(PAL333DCM1[-77002,2]), DELTA))),
+  c(334,"DCM","F", norm(trap(as.numeric(PAL334DCM1[,2]), DELTA))),
+  c(374,"DCM","F", norm(trap(as.numeric(PAL374DCM1[,2]), DELTA))),
+  c(378,"DCM","F", norm(trap(as.numeric(PAL378DCM1[,2]), DELTA))),
+  c(382,"DCM","F", norm(trap(as.numeric(PAL382DCM1[,2]), DELTA))),
+  c(227,"DCM","F", norm(trap(as.numeric(PAL227DCM1[,2]), DELTA))),
+  
+  #S. glaucum clade D
+  c(029,"DCM","D", norm(trap(as.numeric(PAL029DCM1[,2]), DELTA))),
+  c(247,"DCM","D", norm(trap(as.numeric(PAL247DCM1[-77002,2]), DELTA))),
+  c(252,"DCM","D", norm(trap(as.numeric(PAL252DCM1[,2]), DELTA))),
+  c(299,"DCM","D", norm(trap(as.numeric(PAL299DCM1[-77002,2]), DELTA))),
+  c(300,"DCM","D", norm(trap(as.numeric(PAL300DCM1[-77002,2]), DELTA))),
+  c(306,"DCM","D", norm(trap(as.numeric(PAL306DCM1[,2]), DELTA))),
+  c(332,"DCM","D", norm(trap(as.numeric(PAL332DCM1[-77002,2]), DELTA))),
+  c(340,"DCM","D", norm(trap(as.numeric(PAL340DCM1[-77002,2]), DELTA))),
+  c(355,"DCM","D", norm(trap(as.numeric(PAL355DCM1[-77002,2]), DELTA))),
+  c(359,"DCM","D", norm(trap(as.numeric(PAL359DCM1[,2]), DELTA))),
+  
+  #Trocheliophorum
+  c(019,"DCM","T", norm(trap(as.numeric(PAL019DCM1[,2]), DELTA))),
+  c(042,"DCM","T", norm(trap(as.numeric(PAL042DCM1[-77002,2]), DELTA))),
+  c(045,"DCM","T", norm(trap(as.numeric(PAL045DCM1[,2]), DELTA))),
+  c(052,"DCM","T", norm(trap(as.numeric(PAL052DCM1[,2]), DELTA))),
+  c(137,"DCM","T", norm(trap(as.numeric(PAL137DCM1[,2]), DELTA))),
+  c(250,"DCM","T", norm(trap(as.numeric(PAL250DCM1[,2]), DELTA))),
+  c(301,"DCM","T", norm(trap(as.numeric(PAL301DCM1[-77002,2]), DELTA))),
+  c(307,"DCM","T", norm(trap(as.numeric(PAL307DCM1[,2]), DELTA))),
+  c(356,"DCM","T", norm(trap(as.numeric(PAL356DCM1[,2]), DELTA))),
+  c(362,"DCM","T", norm(trap(as.numeric(PAL362DCM1[,2]), DELTA))),
+  c(375,"DCM","T", norm(trap(as.numeric(PAL375DCM1[,2]), DELTA))),
+  c(379,"DCM","T", norm(trap(as.numeric(PAL379DCM1[,2]), DELTA)))
+)
+names <- function(){
+  nameVec = c(1:77001)
+  nameVec = as.character(nameVec)
+  
+  for(i in 1:77001){
+    nameVec[i] = paste("t", nameVec[i], sep="")
+  }
+  
+  nameVec[1:5]
+  nameVec = c("Sample", "Greasiness", "Clade", nameVec)
+  return(nameVec)
+}
+
+```
+
+Snapshot of dataframe:
+
+```{r}
+
+install.packages("stargazer", repos='http://cran.us.r-project.org')
+library(stargazer)
+stargazer(dataframe[1:5,1:5])
+```
+
+
+**3.Create a bin function to sum the data across discrete partitions of equal widths.**
+
+```{r}
+colnames(dataframe) <- names()
+#times within which all data fall
+binner <- function(df, binWidth, delta) {
+  rowz = c()
+  for(j in 1:nrow(df)) {
+    col = c()
+    row_normed = as.numeric(df[j,-(1:3)])
+    for(i in seq(4, ncol(df)-binWidth, binWidth)){
+      end = i + binWidth - 1
+      col = c(col, sum(as.numeric(df[j,i:end])))
+    }
+    rowz = rbind(rowz, col)
+  }
+  return(rowz)
+}
+
+binned_matrix = binner(dataframe, 10, DELTA)
+binned_matrix2 = binner(dataframe, 46, DELTA)
+binned_matrix_100 = binner(dataframe[,15000:62004],100, DELTA)
+binned_matrix_500 = binner(dataframe[,15000:62004],500, DELTA)
+binned_matrix_700 = binner(dataframe[,15000:62004],700, DELTA)
+binned_matrix_1100 = binner(dataframe[,15000:62004],1100, DELTA)
+binned_matrix_2000 = binner(dataframe[,15000:62004],2000, DELTA)
+binned_matrix_3000 = binner(dataframe[,15000:62004],3000, DELTA)
+
+```
+\
+**4. PCA, run with a bin size of 22 seconds (1100 time points)**
+
+```{r}
+trapAreas.centered = scale(binned_matrix_1100, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+F = 1:24
+D = 25:34
+T = 35:46
+
+plot(PC[,1],PC[,2],col="white",main = "PCA of Normalized Trapezoidal Areas with Bin Width 22 seconds",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+```
+
+**5. PCA, run with a bin size of 40 seconds (2000 time points)**
+
+```{r}
+trapAreas.centered = scale(binned_matrix_2000, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+plot(PC[,1],PC[,2],col="white",main = "PCA of Normalized Trapezoidal Areas with Bin Width 40 Seconds",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+```
+
+**6. PCA, run with a bin size of 1 minute (3000 time points)**
+
+```{r}
+trapAreas.centered = scale(binned_matrix_3000, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+plot(PC[,1],PC[,2],col="white",main = "PCA of Normalized Trapezoidal Areas with Bin Width 1 Minute",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+```
+
+```{r}
+binned_matrix_1100 = binner(dataframe[,15000:62004],1100, DELTA)
+binned_matrix_1300 = binner(dataframe[,15000:62004],1300, DELTA)
+binned_matrix_1500 = binner(dataframe[,15000:62004],1500, DELTA)
+binned_matrix_1600 = binner(dataframe[,15000:62004],1600, DELTA)
+binned_matrix_1800 = binner(dataframe[,15000:62004],1800, DELTA)
+binned_matrix_2000 = binner(dataframe[,15000:62004],2000, DELTA)
+```
+
+Experimentation with different bin sizes:
+
+```{r}
+trapAreas.centered = scale(binned_matrix_1100, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+plot(PC[,1],PC[,2],col="white",main = "22 Second Bin Width",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. glaucum clade D"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+
+
+trapAreas.centered = scale(binned_matrix_1300, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+plot(PC[,1],PC[,2],col="white",main = "26 Second Bin Width",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+
+
+trapAreas.centered = scale(binned_matrix_1500, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+plot(PC[,1],PC[,2],col="white",main = "30 Second Bin Width",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+
+
+trapAreas.centered = scale(binned_matrix_1600, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+plot(PC[,1],PC[,2],col="white",main = "32 Second Bin Width",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+
+
+trapAreas.centered = scale(binned_matrix_1800, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+plot(PC[,1],PC[,2],col="white",main = "36 Second Bin Width",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+
+
+trapAreas.centered = scale(binned_matrix_2000, center = TRUE, scale = FALSE)
+pca.result <- prcomp(trapAreas.centered)
+str(pca.result)
+PC = pca.result$x
+
+plot(PC[,1],PC[,2],col="white",main = "40 Second Bin Width",xlab="PC1",ylab="PC2")
+points(PC[F,1],PC[F,2],col="blue")
+points(PC[D,1],PC[D,2],col="deeppink")
+points(PC[T,1],PC[T,2],col="grey")
+legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+```
+
+
+
+
+
+
