@@ -8,7 +8,9 @@ output: pdf_document
 **1. Read in Data**
 
 ```{r}
-setwd("~/Desktop/Coral Project Data/ALL DCM")
+#setwd("~/CoralProject")
+#setwd("C:/Users/maloneem/Documents/CoralProject")
+
 #Read in Data
 filenames = c("PAL003DCM1.csv","PAL006DCM1.csv","PAL007DCM1.csv","PAL014DCM1.csv","PAL015DCM1.csv",
               "PAL017DCM1.csv","PAL018DCM1.csv","PAL019D3.csv","PAL029DCM1.csv","PAL042D2.csv","PAL043DCM1.csv",
@@ -19,7 +21,7 @@ filenames = c("PAL003DCM1.csv","PAL006DCM1.csv","PAL007DCM1.csv","PAL014DCM1.csv
               "PAL332D1.csv","PAL333D1.csv","PAL334D1.csv","PAL340D1.csv","PAL355D1.csv","PAL356D1.csv","PAL359D1.csv",
               "PAL362D1.csv","PAL374DCM1.csv","PAL375D1.csv","PAL378DCM1.csv","PAL379DCM1.csv","PAL382DCM1.csv")
 
-
+setwd("2016 Raw Data/All DCM")
 PAL003DCM1 = read.csv(filenames[1],header=FALSE)
 PAL006DCM1 = read.csv(filenames[2],header=FALSE)
 PAL007DCM1 = read.csv(filenames[3],header=FALSE)
@@ -72,6 +74,7 @@ PAL382DCM1 = read.csv(filenames[48],header=FALSE)
 
 
 **2. Use trap function to generate trapezoidal area**
+
 ```{r}
 DELTA = 0.00033333333333 #Time increment by which intensity is measured (in minutes)
 
@@ -93,58 +96,64 @@ norm <- function(trapArea){
 
 ```{r}
 #Process as dataframe - CHANGE TO AS.NUMERIC
+#truncate
+TRUNC_BEGIN = 15000
+TRUNC_END = 62004
+#We omit the first and last 15000 observations (5 minutes) because there is little observed activity during those time intervals.
+
+
 dataframe = rbind(
   #S. glaucum clade F
-  c(003,"DCM","F", norm(trap(as.numeric(PAL003DCM1[,2]), DELTA))),
-  c(006,"DCM","F", norm(trap(as.numeric(PAL006DCM1[-77002,2]), DELTA))),
-  c(007,"DCM","F", norm(trap(as.numeric(PAL007DCM1[,2]), DELTA))),
-  c(014,"DCM","F", norm(trap(as.numeric(PAL014DCM1[-77002,2]), DELTA))),
-  c(015,"DCM","F", norm(trap(as.numeric(PAL015DCM1[-77002,2]), DELTA))),
-  c(017,"DCM","F", norm(trap(as.numeric(PAL017DCM1[,2]), DELTA))),
-  c(018,"DCM","F", norm(trap(as.numeric(PAL018DCM1[,2]), DELTA))),
-  c(043,"DCM","F", norm(trap(as.numeric(PAL043DCM1[,2]), DELTA))),
-  c(044,"DCM","F", norm(trap(as.numeric(PAL044DCM1[-77002,2]), DELTA))),
-  c(048,"DCM","F", norm(trap(as.numeric(PAL048DCM1[,2]), DELTA))),
-  c(050,"DCM","F", norm(trap(as.numeric(PAL050DCM1[,2]), DELTA))),
-  c(130,"DCM","F", norm(trap(as.numeric(PAL130DCM1[,2]), DELTA))),
-  c(131,"DCM","F", norm(trap(as.numeric(PAL131DCM1[,2]), DELTA))),
-  c(133,"DCM","F", norm(trap(as.numeric(PAL133DCM1[-77002,2]), DELTA))),
-  c(134,"DCM","F", norm(trap(as.numeric(PAL134DCM1[,2]), DELTA))),
-  c(248,"DCM","F", norm(trap(as.numeric(PAL248DCM1[,2]), DELTA))),
-  c(270,"DCM","F", norm(trap(as.numeric(PAL270DCM1[,2]), DELTA))),
-  c(302,"DCM","F", norm(trap(as.numeric(PAL302DCM1[-77002,2]), DELTA))),
-  c(333,"DCM","F", norm(trap(as.numeric(PAL333DCM1[-77002,2]), DELTA))),
-  c(334,"DCM","F", norm(trap(as.numeric(PAL334DCM1[,2]), DELTA))),
-  c(374,"DCM","F", norm(trap(as.numeric(PAL374DCM1[,2]), DELTA))),
-  c(378,"DCM","F", norm(trap(as.numeric(PAL378DCM1[,2]), DELTA))),
-  c(382,"DCM","F", norm(trap(as.numeric(PAL382DCM1[,2]), DELTA))),
-  c(227,"DCM","F", norm(trap(as.numeric(PAL227DCM1[,2]), DELTA))),
+  c(003,"DCM","F", norm(trap(as.numeric(PAL003DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(006,"DCM","F", norm(trap(as.numeric(PAL006DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(007,"DCM","F", norm(trap(as.numeric(PAL007DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(014,"DCM","F", norm(trap(as.numeric(PAL014DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(015,"DCM","F", norm(trap(as.numeric(PAL015DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(017,"DCM","F", norm(trap(as.numeric(PAL017DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(018,"DCM","F", norm(trap(as.numeric(PAL018DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(043,"DCM","F", norm(trap(as.numeric(PAL043DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(044,"DCM","F", norm(trap(as.numeric(PAL044DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(048,"DCM","F", norm(trap(as.numeric(PAL048DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(050,"DCM","F", norm(trap(as.numeric(PAL050DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(130,"DCM","F", norm(trap(as.numeric(PAL130DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(131,"DCM","F", norm(trap(as.numeric(PAL131DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(133,"DCM","F", norm(trap(as.numeric(PAL133DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(134,"DCM","F", norm(trap(as.numeric(PAL134DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(248,"DCM","F", norm(trap(as.numeric(PAL248DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(270,"DCM","F", norm(trap(as.numeric(PAL270DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(302,"DCM","F", norm(trap(as.numeric(PAL302DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(333,"DCM","F", norm(trap(as.numeric(PAL333DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(334,"DCM","F", norm(trap(as.numeric(PAL334DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(374,"DCM","F", norm(trap(as.numeric(PAL374DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(378,"DCM","F", norm(trap(as.numeric(PAL378DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(382,"DCM","F", norm(trap(as.numeric(PAL382DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(227,"DCM","F", norm(trap(as.numeric(PAL227DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
   
   #S. glaucum clade D
-  c(029,"DCM","D", norm(trap(as.numeric(PAL029DCM1[,2]), DELTA))),
-  c(247,"DCM","D", norm(trap(as.numeric(PAL247DCM1[-77002,2]), DELTA))),
-  c(252,"DCM","D", norm(trap(as.numeric(PAL252DCM1[,2]), DELTA))),
-  c(299,"DCM","D", norm(trap(as.numeric(PAL299DCM1[-77002,2]), DELTA))),
-  c(300,"DCM","D", norm(trap(as.numeric(PAL300DCM1[-77002,2]), DELTA))),
-  c(306,"DCM","D", norm(trap(as.numeric(PAL306DCM1[,2]), DELTA))),
-  c(332,"DCM","D", norm(trap(as.numeric(PAL332DCM1[-77002,2]), DELTA))),
-  c(340,"DCM","D", norm(trap(as.numeric(PAL340DCM1[-77002,2]), DELTA))),
-  c(355,"DCM","D", norm(trap(as.numeric(PAL355DCM1[-77002,2]), DELTA))),
-  c(359,"DCM","D", norm(trap(as.numeric(PAL359DCM1[,2]), DELTA))),
+  c(029,"DCM","D", norm(trap(as.numeric(PAL029DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(247,"DCM","D", norm(trap(as.numeric(PAL247DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(252,"DCM","D", norm(trap(as.numeric(PAL252DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(299,"DCM","D", norm(trap(as.numeric(PAL299DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(300,"DCM","D", norm(trap(as.numeric(PAL300DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(306,"DCM","D", norm(trap(as.numeric(PAL306DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(332,"DCM","D", norm(trap(as.numeric(PAL332DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(340,"DCM","D", norm(trap(as.numeric(PAL340DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(355,"DCM","D", norm(trap(as.numeric(PAL355DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(359,"DCM","D", norm(trap(as.numeric(PAL359DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
   
   #Trocheliophorum
-  c(019,"DCM","T", norm(trap(as.numeric(PAL019DCM1[,2]), DELTA))),
-  c(042,"DCM","T", norm(trap(as.numeric(PAL042DCM1[-77002,2]), DELTA))),
-  c(045,"DCM","T", norm(trap(as.numeric(PAL045DCM1[,2]), DELTA))),
-  c(052,"DCM","T", norm(trap(as.numeric(PAL052DCM1[,2]), DELTA))),
-  c(137,"DCM","T", norm(trap(as.numeric(PAL137DCM1[,2]), DELTA))),
-  c(250,"DCM","T", norm(trap(as.numeric(PAL250DCM1[,2]), DELTA))),
-  c(301,"DCM","T", norm(trap(as.numeric(PAL301DCM1[-77002,2]), DELTA))),
-  c(307,"DCM","T", norm(trap(as.numeric(PAL307DCM1[,2]), DELTA))),
-  c(356,"DCM","T", norm(trap(as.numeric(PAL356DCM1[,2]), DELTA))),
-  c(362,"DCM","T", norm(trap(as.numeric(PAL362DCM1[,2]), DELTA))),
-  c(375,"DCM","T", norm(trap(as.numeric(PAL375DCM1[,2]), DELTA))),
-  c(379,"DCM","T", norm(trap(as.numeric(PAL379DCM1[,2]), DELTA)))
+  c(019,"DCM","T", norm(trap(as.numeric(PAL019DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(042,"DCM","T", norm(trap(as.numeric(PAL042DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(045,"DCM","T", norm(trap(as.numeric(PAL045DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(052,"DCM","T", norm(trap(as.numeric(PAL052DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(137,"DCM","T", norm(trap(as.numeric(PAL137DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(250,"DCM","T", norm(trap(as.numeric(PAL250DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(301,"DCM","T", norm(trap(as.numeric(PAL301DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(307,"DCM","T", norm(trap(as.numeric(PAL307DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(356,"DCM","T", norm(trap(as.numeric(PAL356DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(362,"DCM","T", norm(trap(as.numeric(PAL362DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(375,"DCM","T", norm(trap(as.numeric(PAL375DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+  c(379,"DCM","T", norm(trap(as.numeric(PAL379DCM1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA)))
 )
 
 #generate column name vector for the dataframe 
@@ -191,14 +200,14 @@ binner <- function(df, binWidth, delta) {
   return(rowz)
 }
 
-#We omit the first and last 15000 observations (5 minutes) because there is little observed activity during those time intervals.
-binned_matrix_1100 = binner(dataframe[,15000:62004],1100, DELTA)
-binned_matrix_2000 = binner(dataframe[,15000:62004],2000, DELTA)
-binned_matrix_3000 = binner(dataframe[,15000:62004],3000, DELTA)
+
+binned_matrix_1100 = binner(dataframe, 1100, DELTA)
+binned_matrix_2000 = binner(dataframe, 2000, DELTA)
+binned_matrix_3000 = binner(dataframe, 3000, DELTA)
 
 ```
 \
-**4. PCA — 22 Second Bin Width (1100 time points)**
+**4. PCA - 22 Second Bin Width (1100 time points)**
 
 ```{r}
 trapAreas.centered = scale(binned_matrix_1100, center = TRUE, scale = FALSE)
@@ -223,7 +232,7 @@ corrplot(t(correlation_1100), method="color")
 par(mfrow=c(1,1))
 ```
 
-**5. PCA — 40 Second Bin Width (2000 time points)**
+**5. PCA - 40 Second Bin Width (2000 time points)**
 
 ```{r}
 trapAreas.centered = scale(binned_matrix_2000, center = TRUE, scale = FALSE)
@@ -244,7 +253,7 @@ par(mfrow=c(1,1))
 ```
 
 
-**6. PCA — 60 Second Bin Width (3000 time points)**
+**6. PCA - 60 Second Bin Width (3000 time points)**
 
 ```{r}
 trapAreas.centered = scale(binned_matrix_3000, center = TRUE, scale = FALSE)
@@ -264,7 +273,7 @@ corrplot(t(correlation_3000), method="color")
 par(mfrow=c(1,1))
 ```
 
-**7. LDA — 22 Second Bin Width (1100 time points)**
+**7. LDA - 22 Second Bin Width (1100 time points)**
 
 ```{r}
 library(MASS)
@@ -287,7 +296,7 @@ clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
 
 The Wilk's Lambda statistic corresponds to a p-value of ~.09, suggesting that the clades account for a large (but only marginally significant) proportion of the variance in binned area.
 
-**8. LDA — 40 Second Bin Width (2000 time points)**
+**8. LDA - 40 Second Bin Width (2000 time points)**
 
 ```{r}
 lda_info = lda(as.factor(dataframe[,3])~binned_matrix_2000)
@@ -331,12 +340,8 @@ clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
 
 The Wilk's Lambda statistic corresponds to a p-value of ~0, suggesting that the clades account for a large, significant proportion of the variance in binned area.
 \
-\
-\
-\
-\
 
-\
+
 \
 **APPENDIX**
 
@@ -428,6 +433,11 @@ legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheli
 
 barplot(binned_matrix_2000[26,],col="skyblue",main="Sample 29",ylab = "Area",xlab="Bin")
 
-
+setwd("C:/Users/maloneem/Documents/CoralProject/BinnedAreas")
+for(i in 1:46){
+  png(filename=paste("Binned_Areas",as.character(i),".png", sep=""), height=250, width=650, bg="white")
+  barplot(binned_matrix_2000[i,],col="skyblue",ylab = "Area",xlab="Bin")
+  dev.off()
+}
 
 sum(binned_matrix_2000[25,])
