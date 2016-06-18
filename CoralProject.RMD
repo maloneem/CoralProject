@@ -285,7 +285,7 @@ S.glaucum Clade D  | 10
 Trocheliophorum    | 11
 Total              | 45
 
-Number of Hexane ("greasy") Samples of Each Type: 
+Number of Hexane ("nonpolar") Samples of Each Type: 
 
 Species            | Count
 ------------------ | ------------------
@@ -1028,7 +1028,7 @@ cladesDCM = c(rep("F", 23), rep("D", 11))
 for(j in 1:length(cladesDCM)){
   samplesDCM[j] = paste(cladesDCM[j], ".", samplesDCM[j],sep="")
 }
-colorCodes <- c(rep("deeppink", 23), rep("blue", 11))
+colorCodes <- c(rep("blue", 23), rep("deeppink", 11))
 
 clust_DCM = binned_matrix_DCM[1:34,]
 rownames(clust_DCM) = samplesDCM
@@ -1052,7 +1052,7 @@ colLab=c()
 for(j in 1:length(cladesHEX)){
   samplesHEX[j] = paste(cladesHEX[j], ".", samplesHEX[j],sep="")
 }
-colorCodes <- c(rep("deeppink", 18), rep("blue", 8))
+colorCodes <- c(rep("blue", 18), rep("deeppink", 8))
 ```
 
 Note: All but four of our clade D samples are clustered into one group. Samples 300, 400, 227, and 332 remain outside this cluster. 
@@ -1074,6 +1074,7 @@ Note: Half of our clade D samples are clustered into one group. Samples 299, 340
 **Linear Discriminant Analysis**
 
 ```{r ldaDCM}
+library(MASS)
 #leave-one-out cross validation
 lda_cv_DCM = lda(as.factor(dfAllT_DCM[,3])~binned_matrix_DCM, CV=TRUE)
 tab_lda_DCM = table(dfAllT_DCM[,3], lda_cv_DCM$class)
@@ -1093,7 +1094,7 @@ lda_info_DCM_pclass = predict(lda_info_DCM)$class
 par(mar=c(5,4,4,4))
 v = as.numeric(lda_info_DCM_pclass)
 v[which(v==1)] =  "deeppink"   #D
-v[which(v==2)] =  "blue"        #F
+v[which(v==2)] =  "blue"       #F
 v[which(v==3)] =  "grey"       #Trochi
 
 plot(lda_info_DCM_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
@@ -1137,7 +1138,6 @@ dimnames(binned_matrix_DCM) = list(dfAllT_DCM[,1], bins)
 
 binned_matrix_HEX = binner(dfHEX_area, 2000, DELTA)
 dimnames(binned_matrix_HEX) = list(dfAllT_HEX[,1], bins)
-
 
 ```
 
