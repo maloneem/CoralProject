@@ -3,11 +3,13 @@ title: "Coral Analysis Notes"
 author: "Jason Chari and Elizabeth Maloney"
 date: "June 9, 2016"
 output: pdf_document
+sansfont: Garamond
 ---
+
 
 **1. Read in Data**
 
-```{r}
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
 setwd("~/Desktop/Coral Project Data/ALL DCM")
 #Read in Data
 filenames = c("PAL003DCM1.csv","PAL006DCM1.csv","PAL007DCM1.csv","PAL014DCM1.csv","PAL015DCM1.csv",
@@ -427,7 +429,5 @@ legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheli
 
 
 barplot(binned_matrix_2000[26,],col="skyblue",main="Sample 29",ylab = "Area",xlab="Bin")
-
-
 
 sum(binned_matrix_2000[25,])
