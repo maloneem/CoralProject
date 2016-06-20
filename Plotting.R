@@ -72,17 +72,58 @@ drawPlotBinLines <- function(df, row, binWidth, xadj=(0.000175*binWidth), yheigh
   legend(x="topright", legend=paste("PAL", as.character(df[i,1]), sep=""), bty="n")
 }
 
+
+binWidth = 1100
 #DCM truncated and binned chromatograms
 for(i in 1:nrow(dfAllT_DCM)){
-  png(filename=paste("Bin_Trunc_Chrom_PAL_",as.character(dfAllT_DCM[i,1]),"_DCM_",as.character(dfAllT_DCM[i,3]) ,".png", sep=""), height=80, width=400, bg="white")
+  png(filename=paste("Bin_Trunc_Chrom_",as.character(binWidth), "_PAL_",as.character(dfAllT_DCM[i,1]),"_DCM_",as.character(dfAllT_DCM[i,3]) ,".png", sep=""), height=80, width=400, bg="white")
   drawPlotBinLines(dfAllT_DCM, row=i, binWidth=1100, binLabels = TRUE, charSize = .5)
   dev.off()
 }
   
 #HEX truncated and binned chromatograms
 for(i in 1:nrow(dfAllT_HEX)){
-  png(filename=paste("Bin_Trunc_Chrom_PAL_",as.character(dfAllT_HEX[i,1]),"_HEX_",as.character(dfAllT_HEX[i,3]) ,".png", sep=""), height=80, width=400, bg="white")
+  png(filename=paste("Bin_Trunc_Chrom_", as.character(binWidth), "_PAL_",as.character(dfAllT_HEX[i,1]),"_HEX_",as.character(dfAllT_HEX[i,3]) ,".png", sep=""), height=80, width=400, bg="white")
   drawPlotBinLines(dfAllT_HEX, row=i, binWidth=1100, binLabels = TRUE, charSize = .5)
   dev.off()
 }
+
+
+
+BINWIDTH = 2000
+#DCM truncated and binned chromatograms
+for(i in 1:nrow(dfAllT_DCM)){
+  png(filename=paste("Bin_Trunc_Chrom_",as.character(BINWIDTH), "_PAL_",as.character(dfAllT_DCM[i,1]),"_DCM_",as.character(dfAllT_DCM[i,3]) ,".png", sep=""), height=80, width=400, bg="white")
+  drawPlotBinLines(dfAllT_DCM, row=i, binWidth=BINWIDTH, binLabels = TRUE, charSize = .5)
+  dev.off()
+}
+
+#HEX truncated and binned chromatograms
+for(i in 1:nrow(dfAllT_HEX)){
+  png(filename=paste("Bin_Trunc_Chrom_", as.character(binWidth), "_PAL_",as.character(dfAllT_HEX[i,1]),"_HEX_",as.character(dfAllT_HEX[i,3]) ,".png", sep=""), height=80, width=400, bg="white")
+  drawPlotBinLines(dfAllT_HEX, row=i, binWidth=BINWIDTH, binLabels = TRUE, charSize = .5)
+  dev.off()
+}
+
+saveBinnedBarplots(dfAllT_DCM, binned_matrix_DCM, BINWIDTH, c(7, 15, 23, 24, 31, 34, 41, 45), "DCM")
+saveBinnedBarplots(dfAllT_HEX, binned_matrix_HEX, BINWIDTH, c(7, 15, 18 , 25, 26, 33), "HEX")
+
+
+BINWIDTH = 3000
+#DCM truncated and binned chromatograms
+for(i in 1:nrow(dfAllT_DCM)){
+  png(filename=paste("Bin_Trunc_Chrom_",as.character(BINWIDTH), "_PAL_",as.character(dfAllT_DCM[i,1]),"_DCM_",as.character(dfAllT_DCM[i,3]) ,".png", sep=""), height=80, width=400, bg="white")
+  drawPlotBinLines(dfAllT_DCM, row=i, binWidth=BINWIDTH, binLabels = TRUE, charSize = .5)
+  dev.off()
+}
+
+#HEX truncated and binned chromatograms
+for(i in 1:nrow(dfAllT_HEX)){
+  png(filename=paste("Bin_Trunc_Chrom_", as.character(binWidth), "_PAL_",as.character(dfAllT_HEX[i,1]),"_HEX_",as.character(dfAllT_HEX[i,3]) ,".png", sep=""), height=80, width=400, bg="white")
+  drawPlotBinLines(dfAllT_HEX, row=i, binWidth=BINWIDTH, binLabels = TRUE, charSize = .5)
+  dev.off()
+}
+
+saveBinnedBarplots(dfAllT_DCM, binned_matrix_DCM, BINWIDTH, c(7, 15, 23, 24, 31, 34, 41, 45), "DCM")
+saveBinnedBarplots(dfAllT_HEX, binned_matrix_HEX, BINWIDTH, c(7, 15, 18 , 25, 26, 33), "HEX")
 

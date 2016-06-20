@@ -19,6 +19,7 @@ require(knitr)
 require(stats)
 require(corrplot)
 require(plot3D)
+require(dendextend)
 ```
 
 ```{r fileSetUp, include=INCLUDE_SETTING}
@@ -622,106 +623,106 @@ kable(binned_matrix_HEX[1:5, 1:5])
 \pagebreak
 
 **Gas Chromatograms (Truncated and Showing Bins) - Clade F (DCM)** \
-![](Bin_Trunc_Chrom_PAL_3_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_6_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_7_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_14_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_15_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_17_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_18_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_43_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_44_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_48_DCM_F.png)   \
-![](Bin_Trunc_Chrom_PAL_50_DCM_F.png)   \
-![](Bin_Trunc_Chrom_PAL_130_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_131_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_133_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_134_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_248_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_270_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_302_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_333_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_334_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_374_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_378_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_382_DCM_F.png)  \
-![](Bin_Trunc_Chrom_PAL_227_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_3_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_6_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_7_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_14_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_15_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_17_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_18_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_43_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_44_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_48_DCM_F.png)   \
+![](Bin_Trunc_Chrom_1100_PAL_50_DCM_F.png)   \
+![](Bin_Trunc_Chrom_1100_PAL_130_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_131_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_133_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_134_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_248_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_270_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_302_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_333_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_334_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_374_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_378_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_382_DCM_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_227_DCM_F.png)  \
 
 \pagebreak
 
 **Gas Chromatograms (Truncated and Showing Bins) - Clade D (DCM)** \
-![](Bin_Trunc_Chrom_PAL_29_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_247_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_252_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_299_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_300_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_306_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_332_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_340_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_355_DCM_D.png)  \
-![](Bin_Trunc_Chrom_PAL_359_DCM_D.png)   \
+![](Bin_Trunc_Chrom_1100_PAL_29_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_247_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_252_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_299_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_300_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_306_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_332_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_340_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_355_DCM_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_359_DCM_D.png)   \
 
 
 \pagebreak
 
 **Gas Chromatograms (Truncated and Showing Bins) - Trocheliophorum (DCM)** \
-![](Bin_Trunc_Chrom_PAL_19_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_42_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_45_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_52_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_137_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_250_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_301_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_307_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_356_DCM_T.png)  \
-![](Bin_Trunc_Chrom_PAL_362_DCM_T.png)   \
-![](Bin_Trunc_Chrom_PAL_379_DCM_T.png)  
+![](Bin_Trunc_Chrom_1100_PAL_19_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_42_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_45_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_52_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_137_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_250_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_301_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_307_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_356_DCM_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_362_DCM_T.png)   \
+![](Bin_Trunc_Chrom_1100_PAL_379_DCM_T.png)  
 
 \pagebreak
 
 **Gas Chromatograms (Truncated and Showing Bins) - Clade F (HEX)** \
-![](Bin_Trunc_Chrom_PAL_1_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_3_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_7_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_14_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_15_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_17_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_18_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_43_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_44_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_130_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_131_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_133_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_270_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_333_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_334_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_374_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_378_HEX_F.png)  \
-![](Bin_Trunc_Chrom_PAL_382_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_1_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_3_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_7_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_14_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_15_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_17_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_18_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_43_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_44_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_130_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_131_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_133_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_270_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_333_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_334_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_374_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_378_HEX_F.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_382_HEX_F.png)  \
 
 \pagebreak
 
 **Gas Chromatograms (Truncated and Showing Bins) - Clade D (HEX)** \
 \
-![](Bin_Trunc_Chrom_PAL_29_HEX_D.png)  \
-![](Bin_Trunc_Chrom_PAL_46_HEX_D.png)  \
-![](Bin_Trunc_Chrom_PAL_252_HEX_D.png)  \
-![](Bin_Trunc_Chrom_PAL_299_HEX_D.png)  \
-![](Bin_Trunc_Chrom_PAL_332_HEX_D.png)  \
-![](Bin_Trunc_Chrom_PAL_340_HEX_D.png)  \
-![](Bin_Trunc_Chrom_PAL_355_HEX_D.png)  \
-![](Bin_Trunc_Chrom_PAL_359_HEX_D.png)   \
+![](Bin_Trunc_Chrom_1100_PAL_29_HEX_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_46_HEX_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_252_HEX_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_299_HEX_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_332_HEX_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_340_HEX_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_355_HEX_D.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_359_HEX_D.png)   \
 
 \pagebreak
 
 **Gas Chromatograms (Truncated and Showing Bins) - Trocheliophorum (HEX)** \
-![](Bin_Trunc_Chrom_PAL_19_HEX_T.png)  \
-![](Bin_Trunc_Chrom_PAL_42_HEX_T.png)  \
-![](Bin_Trunc_Chrom_PAL_250_HEX_T.png)  \
-![](Bin_Trunc_Chrom_PAL_356_HEX_T.png)  \
-![](Bin_Trunc_Chrom_PAL_362_HEX_T.png)   \
-![](Bin_Trunc_Chrom_PAL_375_HEX_T.png)   \
-![](Bin_Trunc_Chrom_PAL_379_HEX_T.png)   
+![](Bin_Trunc_Chrom_1100_PAL_19_HEX_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_42_HEX_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_250_HEX_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_356_HEX_T.png)  \
+![](Bin_Trunc_Chrom_1100_PAL_362_HEX_T.png)   \
+![](Bin_Trunc_Chrom_1100_PAL_375_HEX_T.png)   \
+![](Bin_Trunc_Chrom_1100_PAL_379_HEX_T.png)   
 
 \pagebreak
 
@@ -964,46 +965,236 @@ We see that many bins correlate highly with our first principal component.
 
 ```{r}
 
+#incorporate clade and sample info to name matrix for cluster
+samplesDCM = rownames(binned_matrix_DCM[1:34,])
+cladesDCM = c(rep("F", 23), rep("D", 11))
+for(j in 1:length(cladesDCM)){
+  samplesDCM[j] = paste(cladesDCM[j], ".", samplesDCM[j],sep="")
+}
+colorCodes <- c(rep("deeppink", 23), rep("blue", 11))
 
-#samples = rownames(binned_matrix_DCM)
-#clades = c(rep("F", 23), rep("D", 11), rep("T", 11))
-#for(j in 1:length(clades)){
-#  clades[j] = paste(clades[j], samples[j])
+clust_DCM = binned_matrix_DCM[1:34,]
+rownames(clust_DCM) = samplesDCM
+
+
+#BETTER
+hcDCM = hclust(dist(clust_DCM, method="maximum"), method="complete")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
+
+hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="complete")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
+
+#hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="ward.D2")
+#colLab=c()
+#for(i in 1:length(hcDCM$order)){
+#  colLab[i] = colorCodes[hcDCM$order[i]]
 #}
+#dend <- as.dendrogram(hcDCM)
+#labels_colors(dend) <- colLab
+#plot(dend)
+
+hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="mcquitty")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
+
+hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="ward.D")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
+
+hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="average")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
+
+hcDCM = hclust(dist(clust_DCM, method="canberra"), method="complete")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
+
+hcDCM = hclust(dist(clust_DCM, method="canberra"), method="median")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
+
+hcDCM = hclust(dist(clust_DCM, method="canberra"), method="ward.D")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
+
+hcDCM = hclust(dist(clust_DCM, method="canberra"), method="single")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
 
 
-#clust_DCM = binned_matrix_DCM
-#rownames(clust_DCM) = clades
+#minkowski and euclidian give same thing
+hcDCM = hclust(dist(clust_DCM, method="euclidian"), method="ward.D")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
 
-#distDCM = dist(clust_DCM)
-#hcDCM = hclust(distDCM)
-#plot(hcDCM)
+hcDCM = hclust(dist(clust_DCM, method="euclidian"), method="ward.D2")
+colLab=c()
+for(i in 1:length(hcDCM$order)){
+  colLab[i] = colorCodes[hcDCM$order[i]]
+}
+dend <- as.dendrogram(hcDCM)
+labels_colors(dend) <- colLab
+plot(dend)
 
 
 
-#clust_DCM_PC = PC_DCM
-#rownames(clust_DCM_PC) = clades
+samplesHEX = rownames(binned_matrix_HEX)
+cladesHEX = c(rep("F", 18), rep("D", 8), rep("T", 7))
+for(j in 1:length(cladesHEX)){
+  cladesHEX[j] = paste(cladesHEX[j], samplesHEX[j])
+}
 
-#distDCM_PC = dist(clust_DCM_PC)
-#hcDCM_PC = hclust(d=distDCM_PC, method="ward.D2")
-#plot(hcDCM_PC)
+clust_HEX_PC = PC_HEX
+rownames(clust_HEX_PC) = cladesHEX
+
+#euclidian and minkowski give same thing
+hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="complete")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="single")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="average")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="median")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="centroid")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="ward.D")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="ward.D2")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="mcquitty")
+plot(hcHEX)
+
+hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="complete")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="single")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="average")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="median")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="centroid")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="ward.D")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="ward.D2")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="mcquitty")
+plot(hcHEX)
+
+hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="complete")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="single")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="average")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="median")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="centroid")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="ward.D")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="ward.D2")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="mcquitty")
+plot(hcHEX)
+
+hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="complete")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="single")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="average")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="median")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="centroid")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="ward.D")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="ward.D2")
+plot(hcHEX)
+hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="mcquitty")
+plot(hcHEX)
 
 
 
-#clust_HEX_PC = PC_HEX
-#rownames(clust_HEX_PC) = clades
-
-#distDCM_PC = dist(clust_HEX_PC)
-#hcHEX_PC = hclust(d=distHEX_PC, method="ward.D2")
-#plot(hcHEX_PC)
 ```
 
 HC Notes:
 
- * We use euclidian distance as our measure of distance between samples.
+ * We use EUCLIDIAN distance as our measure of distance between samples.
 
 
 **Linear Discriminant Analysis**
+
+
+
+
+```{r binwidth2000}
+binned_matrix_DCM = binner(dfDCM_area, 2000, DELTA)
+bins = 1:ncol(binned_matrix_DCM)
+for (i in 1:ncol(binned_matrix_DCM)){
+  bins[i] = paste("Bin", as.character(i))
+}
+dimnames(binned_matrix_DCM) = list(dfAllT_DCM[,1], bins)
+
+binned_matrix_HEX = binner(dfHEX_area, 2000, DELTA)
+dimnames(binned_matrix_HEX) = list(dfAllT_HEX[,1], bins)
+
+
+```
 
 
 
@@ -1032,12 +1223,15 @@ Other Packages Used:
     + correlation matrix plots
 * plot3d
     + 3d PCA plot
+* dendextend
+    + dendogram with color
 
 ```{r otherpackages, eval=EVAL_SETTING}
 citation("knitr")
 citation("base")
 citation("corrplot")
 citation("plot3D")
+citation("dendextend")
 ```
 
 PCA Sources: 
