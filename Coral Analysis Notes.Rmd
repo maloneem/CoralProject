@@ -77,12 +77,13 @@ PAL356DCM1 = read.csv(filenamesDCM[41],header=FALSE)
 PAL359DCM1 = read.csv(filenamesDCM[42],header=FALSE)
 PAL362DCM1 = read.csv(filenamesDCM[43],header=FALSE)
 PAL374DCM1 = read.csv(filenamesDCM[44],header=FALSE)
-PAL375DCM1 = read.csv(filenamesDCM[45],header=FALSE)
+#PAL375DCM1 = read.csv(filenamesDCM[45],header=FALSE) Chromatogram indicates nothing injected - removed
 PAL378DCM1 = read.csv(filenamesDCM[46],header=FALSE)
 PAL379DCM1 = read.csv(filenamesDCM[47],header=FALSE)
 PAL382DCM1 = read.csv(filenamesDCM[48],header=FALSE)
 
-
+setwd("..")
+setwd("All HEX")
 PAL001HEX1 = read.csv(filenamesHEX[1],header=FALSE)
 PAL003HEX1 = read.csv(filenamesHEX[2],header=FALSE)
 PAL007HEX1 = read.csv(filenamesHEX[3],header=FALSE)
@@ -100,7 +101,7 @@ PAL130HEX1 = read.csv(filenamesHEX[14],header=FALSE)
 PAL131HEX1 = read.csv(filenamesHEX[15],header=FALSE)
 PAL133HEX1 = read.csv(filenamesHEX[16],header=FALSE)
 PAL250HEX1 = read.csv(filenamesHEX[17],header=FALSE) 
-PAL250HEX2 = read.csv(filenamesHEX[18],header=FALSE)
+#PAL250HEX2 = read.csv(filenamesHEX[18],header=FALSE) Used PAL250HEX1 since graph of PAL250HEX2 less consistent with other HEX trochis 
 PAL252HEX1 = read.csv(filenamesHEX[19],header=FALSE)
 PAL270HEX1 = read.csv(filenamesHEX[20],header=FALSE)
 PAL299HEX1 = read.csv(filenamesHEX[21],header=FALSE)
@@ -118,10 +119,6 @@ PAL378HEX1 = read.csv(filenamesHEX[32],header=FALSE)
 PAL379HEX1 = read.csv(filenamesHEX[33],header=FALSE)
 PAL382HEX1 = read.csv(filenamesHEX[34],header=FALSE)
 ```
-plot(PAL250HEX1, type="l")
-plot(PAL250HEX2, type="l")
-plot(PAL042HEX1, type="l")
-plot(PAL019HEX1, type="l")
 
 
 **2. Use trap function to generate trapezoidal area**
@@ -225,7 +222,7 @@ dataframeHEX = rbind(
   c(131, "HEX", "F", norm(trap(as.numeric(PAL131HEX1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
   c(133, "HEX", "F", norm(trap(as.numeric(PAL133HEX1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
   c(250, "HEX", "T", norm(trap(as.numeric(PAL250HEX1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
-  c(250, "HEX", "T", norm(trap(as.numeric(PAL250HEX2[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
+#  c(250, "HEX", "T", norm(trap(as.numeric(PAL250HEX2[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
   c(252, "HEX", "D", norm(trap(as.numeric(PAL252HEX1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
   c(270, "HEX", "F", norm(trap(as.numeric(PAL270HEX1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
   c(299, "HEX", "D", norm(trap(as.numeric(PAL299HEX1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
@@ -243,6 +240,8 @@ dataframeHEX = rbind(
   c(379, "HEX", "T", norm(trap(as.numeric(PAL379HEX1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA))),
   c(382, "HEX", "F", norm(trap(as.numeric(PAL382HEX1[TRUNC_BEGIN:TRUNC_END, 2]), DELTA)))
 )
+
+
 #generate column name vector for the dataframe 
 names <- function(){
   nameVec = c(1:47005)
@@ -256,7 +255,9 @@ names <- function(){
   nameVec = c("Sample", "Greasiness", "Clade", nameVec)
   return(nameVec)
 }
-colnames(dataframeHEX) <- names()
+colNames = names()
+colnames(dataframeHEX) <- colNames
+colnames(dataframe) <- colNames
 ```
 
 Snapshot of dataframe:
