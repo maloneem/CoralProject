@@ -1074,23 +1074,34 @@ Note: Half of our clade D samples are clustered into one group. Samples 299, 340
 **Linear Discriminant Analysis**
 
 ```{r ldaDCM}
-#DCM:
-#binned_matrix_DCM = binner(dfDCM_area, 1100, DELTA)
-lda_info = lda(as.factor(dfAllT_DCM[,3])~binned_matrix_DCM)
-kable(lda_info$scaling, caption="Linear Discriminant Coefficient Matrix (DCM)") #Linear discriminant coefficient matrix
-lda_info_p = predict(lda_info,as.data.frame(binned_matrix_DCM))
-lda_info_pclass = predict(lda_info)$class
+#leave-one-out cross validation
+lda_cv_DCM = lda(as.factor(dfAllT_DCM[,3])~binned_matrix_DCM, CV=TRUE)
+tab_lda_DCM = table(dfAllT_DCM[,3], lda_cv_DCM$class)
+percents_lda_DCM = rbind(tab_lda_DCM[1, ]/sum(tab_lda_DCM[1, ]), tab_lda_DCM[2, ]/sum(tab_lda_DCM[2, ]), tab_lda_DCM[3, ]/sum(tab_lda_DCM[3,]))
+
+dimnames(tab_lda_DCM) = list(c("Actual D", "Actual F", "Actual T"), c("Predicted D", "Predicted F", "Predicted T"))
+dimnames(percents_lda_DCM) = list(c("Actual D", "Actual F", "Actual T"), c("Predicted D", "Predicted F", "Predicted T"))
+
+kable(tab_lda_DCM)
+kable(percents_lda_DCM, digits=3, caption="Proportion Actual vs. Predicted (DCM)")
+
+lda_info_DCM = lda(as.factor(dfAllT_DCM[,3])~binned_matrix_DCM, CV=FALSE)
+kable(lda_info_DCM$scaling, caption="Linear Discriminant Coefficient Matrix (DCM)") #Linear discriminant coefficient 
+
+lda_info_DCM_p = predict(lda_info_DCM,as.data.frame(binned_matrix_DCM))
+lda_info_DCM_pclass = predict(lda_info_DCM)$class
 par(mar=c(5,4,4,4))
-v = as.numeric(lda_info_pclass)
+v = as.numeric(lda_info_DCM_pclass)
 v[which(v==1)] =  "deeppink"   #D
-v[which(v==2)] =  12           #F
+v[which(v==2)] =  "blue"        #F
 v[which(v==3)] =  "grey"       #Trochi
 
-plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
-legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+plot(lda_info_DCM_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("bottomleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
 
 clade.manova = manova(binned_matrix_DCM~as.factor(dfAllT_DCM[,3]))
 clade.wilks = summary(clade.manova,test="Wilks"); clade.wilks
+
 ```
 
 ```{r ldaHEX}
@@ -1190,3 +1201,8 @@ HC Sources:
     + Ward's minimizes within cluster variance
 * http://www.cs.princeton.edu/courses/archive/spr08/cos424/slides/clustering-2.pdf
     + Nice description of clustering
+    
+LDA Sources: 
+
+* http://maths-people.anu.edu.au/~johnm/courses/dm/math3346/2008/pdf/r-exercisesVI.pdf
+    + 
