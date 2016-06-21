@@ -1,5 +1,5 @@
 ---
-title: "Data - Read In and Notes"
+title: "CoralProject"
 author: "Jason Chari and Elizabeth Maloney"
 date: "June 15, 2016"
 output: pdf_document
@@ -20,6 +20,7 @@ require(stats)
 require(corrplot)
 require(plot3D)
 require(dendextend)
+require(MASS)
 ```
 
 ```{r fileSetUp, include=INCLUDE_SETTING}
@@ -889,7 +890,7 @@ plot(PC_DCM[,1],PC_DCM[,2],main = "PCA - 1100 Time Points Bin Width",xlab="PC1",
 points(PC_DCM[F,1],PC_DCM[F,2],col="blue")
 points(PC_DCM[D,1],PC_DCM[D,2],col="deeppink")
 points(PC_DCM[T,1],PC_DCM[T,2],col="grey")
-legend("topleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
 
 
 #3D plot
@@ -961,10 +962,11 @@ kable(corrHEX[1:3, 37:42], digits=3)
  
 We see that many bins correlate highly with our first principal component. 
 
+\pagebreak
+
 **Cluster Analysis - Hierarchial Clustering**
 
-```{r}
-
+```{r clusteringtest, include=INCLUDE_SETTING}
 #incorporate clade and sample info to name matrix for cluster
 samplesDCM = rownames(binned_matrix_DCM[1:34,])
 cladesDCM = c(rep("F", 23), rep("D", 11))
@@ -976,211 +978,143 @@ colorCodes <- c(rep("deeppink", 23), rep("blue", 11))
 clust_DCM = binned_matrix_DCM[1:34,]
 rownames(clust_DCM) = samplesDCM
 
+dist_methods = c("euclidian", "maximum", "manhattan", "canberra")
+clust_methods = c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid")
 
-#BETTER
-hcDCM = hclust(dist(clust_DCM, method="maximum"), method="complete")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
+for(dist_method in dist_methods){
+  for(clust_method in clust_methods){
+    hcDCM = hclust(dist(clust_DCM, method=dist_method), method=clust_method)
+    colLab=c()
+    for(i in 1:length(hcDCM$order)){
+      colLab[i] = colorCodes[hcDCM$order[i]]
+    }
+    dend <- as.dendrogram(hcDCM)
+    labels_colors(dend) <- colLab
+    plot(dend, main=paste(clust_method, dist_method))
+  }
 }
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
 
-hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="complete")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
+#incorporate clade and sample info to name matrix for cluster
+samplesHEX = rownames(binned_matrix_HEX[1:26,])
+cladesHEX = c(rep("F", 18), rep("D", 8))
+for(j in 1:length(cladesHEX)){
+  samplesHEX[j] = paste(cladesHEX[j], ".", samplesHEX[j],sep="")
 }
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
+colorCodes <- c(rep("deeppink", 18), rep("blue", 8))
 
-#hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="ward.D2")
-#colLab=c()
-#for(i in 1:length(hcDCM$order)){
-#  colLab[i] = colorCodes[hcDCM$order[i]]
-#}
-#dend <- as.dendrogram(hcDCM)
-#labels_colors(dend) <- colLab
-#plot(dend)
+clust_HEX = binned_matrix_HEX[1:26,]
+rownames(clust_HEX) = samplesHEX
 
-hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="mcquitty")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
+for(dist_method in dist_methods){
+  for(clust_method in clust_methods){
+    hcHEX = hclust(dist(clust_HEX, method=dist_method), method=clust_method)
+    colLab=c()
+    for(i in 1:length(hcHEX$order)){
+      colLab[i] = colorCodes[hcHEX$order[i]]
+    }
+    dend <- as.dendrogram(hcHEX)
+    labels_colors(dend) <- colLab
+    plot(dend, main=paste(clust_method, dist_method))
+  }
 }
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
+```
 
-hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="ward.D")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
+After trying all possible measures of distance and clustering techniques we see the neatest clusters from using euclidian distance with ward (ward.D minimizing within-cluster standard deviation) clustering for DCM and median clustering for HEX. 
+
+```{r cluteringDCM}
+#incorporate clade and sample info to name matrix for cluster
+samplesDCM = rownames(binned_matrix_DCM[1:34,])
+cladesDCM = c(rep("F", 23), rep("D", 11))
+for(j in 1:length(cladesDCM)){
+  samplesDCM[j] = paste(cladesDCM[j], ".", samplesDCM[j],sep="")
 }
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
+colorCodes <- c(rep("deeppink", 23), rep("blue", 11))
 
-hcDCM = hclust(dist(clust_DCM, method="manhattan"), method="average")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
-}
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
+clust_DCM = binned_matrix_DCM[1:34,]
+rownames(clust_DCM) = samplesDCM
 
-hcDCM = hclust(dist(clust_DCM, method="canberra"), method="complete")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
-}
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
-
-hcDCM = hclust(dist(clust_DCM, method="canberra"), method="median")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
-}
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
-
-hcDCM = hclust(dist(clust_DCM, method="canberra"), method="ward.D")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
-}
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
-
-hcDCM = hclust(dist(clust_DCM, method="canberra"), method="single")
-colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
-}
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
-
-
-#minkowski and euclidian give same thing
 hcDCM = hclust(dist(clust_DCM, method="euclidian"), method="ward.D")
 colLab=c()
 for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
-}
+      colLab[i] = colorCodes[hcDCM$order[i]]
+    }
 dend <- as.dendrogram(hcDCM)
 labels_colors(dend) <- colLab
-plot(dend)
+plot(dend, main="DCM Clustering Using Euclidian Distance and Ward Clustering")
 
-hcDCM = hclust(dist(clust_DCM, method="euclidian"), method="ward.D2")
+
+
+#incorporate clade and sample info to name matrix for cluster
+samplesHEX = rownames(binned_matrix_HEX[1:26,])
+cladesHEX = c(rep("F", 18), rep("D", 8))
+hcHEX = hclust(dist(clust_HEX, method="euclidian"), method="median")
 colLab=c()
-for(i in 1:length(hcDCM$order)){
-  colLab[i] = colorCodes[hcDCM$order[i]]
-}
-dend <- as.dendrogram(hcDCM)
-labels_colors(dend) <- colLab
-plot(dend)
-
-
-
-samplesHEX = rownames(binned_matrix_HEX)
-cladesHEX = c(rep("F", 18), rep("D", 8), rep("T", 7))
 for(j in 1:length(cladesHEX)){
-  cladesHEX[j] = paste(cladesHEX[j], samplesHEX[j])
+  samplesHEX[j] = paste(cladesHEX[j], ".", samplesHEX[j],sep="")
 }
-
-clust_HEX_PC = PC_HEX
-rownames(clust_HEX_PC) = cladesHEX
-
-#euclidian and minkowski give same thing
-hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="complete")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="single")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="average")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="median")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="centroid")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="ward.D")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="ward.D2")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="euclidian"), method="mcquitty")
-plot(hcHEX)
-
-hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="complete")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="single")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="average")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="median")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="centroid")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="ward.D")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="ward.D2")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="maximum"), method="mcquitty")
-plot(hcHEX)
-
-hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="complete")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="single")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="average")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="median")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="centroid")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="ward.D")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="ward.D2")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="manhattan"), method="mcquitty")
-plot(hcHEX)
-
-hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="complete")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="single")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="average")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="median")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="centroid")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="ward.D")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="ward.D2")
-plot(hcHEX)
-hcHEX = hclust(dist(clust_HEX_PC, method="canberra"), method="mcquitty")
-plot(hcHEX)
-
-
-
+colorCodes <- c(rep("deeppink", 18), rep("blue", 8))
 ```
 
-HC Notes:
+Note: All but four of our clade D samples are clustered into one group. Samples 300, 400, 227, and 332 remain outside this cluster. 
 
- * We use EUCLIDIAN distance as our measure of distance between samples.
+```{r clustering HEX}
+clust_HEX = binned_matrix_HEX[1:26,]
+rownames(clust_HEX) = samplesHEX
 
+for(i in 1:length(hcHEX$order)){      
+  colLab[i] = colorCodes[hcHEX$order[i]]
+}
+dend <- as.dendrogram(hcHEX)
+labels_colors(dend) <- colLab
+plot(dend, main="DCM Clustering Using Euclidian Distance and Median Clustering")
+```
+
+Note: Half of our clade D samples are clustered into one group. Samples 299, 340, 252, and 355 remain outside this cluster.
 
 **Linear Discriminant Analysis**
 
+```{r ldaDCM}
+#DCM:
+#binned_matrix_DCM = binner(dfDCM_area, 1100, DELTA)
+lda_info = lda(as.factor(dfAllT_DCM[,3])~binned_matrix_DCM)
+kable(lda_info$scaling, caption="Linear Discriminant Coefficient Matrix (DCM)") #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info,as.data.frame(binned_matrix_DCM))
+lda_info_pclass = predict(lda_info)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
 
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
 
+clade.manova = manova(binned_matrix_DCM~as.factor(dfAllT_DCM[,3]))
+clade.wilks = summary(clade.manova,test="Wilks"); clade.wilks
+```
+
+```{r ldaHEX}
+#HEX:
+lda_info_HEX = lda(as.factor(dfAllT_HEX[,3])~binned_matrix_HEX)
+kable(lda_info_HEX$scaling, caption="Linear Discriminant Coefficient Matrix (HEX)") #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info_HEX,as.data.frame(binned_matrix_HEX))
+lda_info_pclass = predict(lda_info_HEX)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("bottomleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova.HEX = manova(binned_matrix_HEX~as.factor(dfAllT_HEX[,3]))
+#clade.wilks = summary(clade.manova.HEX,test="Wilks"); clade.wilks
+```
+
+The Wilk's Lambda statistic corresponds to a p-value of ~.09, suggesting that the clades account for a large (but only marginally significant) proportion of the variance in binned area.
+
+```
 
 ```{r binwidth2000}
 binned_matrix_DCM = binner(dfDCM_area, 2000, DELTA)
@@ -1196,7 +1130,7 @@ dimnames(binned_matrix_HEX) = list(dfAllT_HEX[,1], bins)
 
 ```
 
-
+\pagebreak
 
 **Documentation of Resources**
 
@@ -1249,3 +1183,10 @@ HC Sources:
 
 * http://www.r-tutor.com/gpu-computing/clustering/hierarchical-cluster-analysis
     + R tutorial for hierarchial clustering analysis
+* http://stats.stackexchange.com/questions/109949/what-algorithm-does-ward-d-in-hclust-implement-if-it-is-not-wards-criterion
+    + Describes differences between ward.D and ward.D2 (user response)
+* https://en.wikipedia.org/wiki/Ward%27s_method
+    + Ward's method
+    + Ward's minimizes within cluster variance
+* http://www.cs.princeton.edu/courses/archive/spr08/cos424/slides/clustering-2.pdf
+    + Nice description of clustering
