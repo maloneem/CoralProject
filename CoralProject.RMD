@@ -831,7 +831,7 @@ kable(binned_matrix_HEX[1:5, 1:5])
 
 **Principal Components Analysis (PCA)**
 
-As a descriptive measure, we examine the correlation between the bins we use as our explanatory variables. 
+We examine the correlation between the bins we use as our explanatory variables.
 
 ```{r bincorrelation, echo=ECHO_SETTING}
 par(mar=c(4.1, 4.1, 5.1, 2.1))
@@ -842,7 +842,7 @@ corrplot(cor(binned_matrix_DCM, binned_matrix_DCM), type="lower", main="DCM Bin 
 corrplot(cor(binned_matrix_HEX, binned_matrix_HEX), type="lower", main="HEX Bin Correlations")
 ```
 
-Because we see that there are fairly high correlations between bins in several regions of both correlation plots, we have reason to believe that PCA might be appropriate. 
+Because we see that there are fairly high correlations between bins in several regions of both correlation plots, we have reason to believe that PCA might be appropriate to reduce dimensionality.
 
 We proceed by validating the assumptions of PCA (as outlined in the Princeton Tutorial on Principal Component Analysis listed below).
 
@@ -915,7 +915,7 @@ kable(corrDCM[1:3, 25:36], digits=3)
 kable(corrDCM[1:3, 37:42], digits=3)
 ```
 
-We see high (in absolute value) correlations between the first principal component and bins 31 and 17. 
+We see high (in absolute value) correlations between the first principal component and bins 31 and 17. We also see high correlation between bin 23 and the second principal component.
 Note that in the binned barplots clade D exhibits a greater area in bin 31 as compared to surrounding areas whereas no such jump occurs in clade F. Similarly, clade F has greater area in bin 17. 
 
 ```{r pca_HEX}
@@ -1104,23 +1104,37 @@ clade.wilks = summary(clade.manova,test="Wilks"); clade.wilks
 
 ```
 
+We do not have enough samples to proceed with LDA for our hexane samples unless we omit some independent variables. 
+
 ```{r ldaHEX}
 #HEX:
-lda_info_HEX = lda(as.factor(dfAllT_HEX[,3])~binned_matrix_HEX)
-kable(lda_info_HEX$scaling, caption="Linear Discriminant Coefficient Matrix (HEX)") #Linear discriminant coefficient matrix
-lda_info_p = predict(lda_info_HEX,as.data.frame(binned_matrix_HEX))
-lda_info_pclass = predict(lda_info_HEX)$class
+#leave-one-out cross validation
+lda_cv_HEX = lda(as.factor(dfAllT_HEX[,3])~binned_matrix_HEX, CV=TRUE)
+tab_lda_HEX = table(dfAllT_HEX[,3], lda_cv_HEX$class)
+percents_lda_HEX = rbind(tab_lda_HEX[1, ]/sum(tab_lda_HEX[1, ]), tab_lda_HEX[2, ]/sum(tab_lda_HEX[2, ]), tab_lda_HEX[3, ]/sum(tab_lda_HEX[3,]))
+
+dimnames(tab_lda_HEX) = list(c("Actual D", "Actual F", "Actual T"), c("Predicted D", "Predicted F", "Predicted T"))
+dimnames(percents_lda_HEX) = list(c("Actual D", "Actual F", "Actual T"), c("Predicted D", "Predicted F", "Predicted T"))
+
+kable(tab_lda_HEX)
+kable(percents_lda_HEX, digits=3, caption="Proportion Actual vs. Predicted (HEX)")
+
+lda_info_HEX = lda(as.factor(dfAllT_HEX[,3])~binned_matrix_HEX, CV=FALSE)
+kable(lda_info_HEX$scaling, caption="Linear Discriminant Coefficient Matrix (HEX)") #Linear discriminant coefficient 
+
+lda_info_HEX_p = predict(lda_info_HEX,as.data.frame(binned_matrix_HEX))
+lda_info_HEX_pclass = predict(lda_info_HEX)$class
 par(mar=c(5,4,4,4))
-v = as.numeric(lda_info_pclass)
+v = as.numeric(lda_info_HEX_pclass)
 v[which(v==1)] =  "deeppink"   #D
-v[which(v==2)] =  12           #F
+v[which(v==2)] =  "blue"        #F
 v[which(v==3)] =  "grey"       #Trochi
 
-plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+plot(lda_info_HEX_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
 legend("bottomleft",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
 
-clade.manova.HEX = manova(binned_matrix_HEX~as.factor(dfAllT_HEX[,3]))
-#clade.wilks = summary(clade.manova.HEX,test="Wilks"); clade.wilks
+clade.manova = manova(binned_matrix_HEX~as.factor(dfAllT_HEX[,3]))
+#clade.wilks = summary(clade.manova,test="Wilks"); clade.wilks
 ```
 
 The Wilk's Lambda statistic corresponds to a p-value of ~.09, suggesting that the clades account for a large (but only marginally significant) proportion of the variance in binned area.
@@ -1206,3 +1220,6 @@ LDA Sources:
 
 * http://maths-people.anu.edu.au/~johnm/courses/dm/math3346/2008/pdf/r-exercisesVI.pdf
     + 
+* http://www.originlab.com/doc/Origin-Help/Discriminant-Analysis
+    + Appropriate data for LDA
+    + Assumptionsof LDA and how to verify
