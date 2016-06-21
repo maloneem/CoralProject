@@ -7,6 +7,7 @@ output: pdf_document
 
 **Data Entry**
 
+<<<<<<< HEAD
 ```{r settings, include=FALSE}
 ECHO_SETTING = FALSE #allows us to easily change setting in order to print all code, if necessary
 INCLUDE_SETTING = FALSE #allows us to easily change setting in order to print all code, if necessary
@@ -26,6 +27,11 @@ require(MASS)
 ```{r fileSetUp, include=INCLUDE_SETTING}
 #Set working directory to CoralProjet
 setwd("~/CoralProject")
+=======
+```{r}
+setwd("~/CoralProject")
+#setwd("C:/Users/maloneem/Documents/CoralProject")
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 
 #Create a vector to hold filenames of all DCM (medium polarity) data files
 filenamesDCM = c("PAL003DCM1.csv","PAL006DCM1.csv","PAL007DCM1.csv","PAL014DCM1.csv","PAL015DCM1.csv",
@@ -49,10 +55,15 @@ filenamesHEX = c( "PAL001HEX1.CSV", "PAL003HEX1.CSV", "PAL007HEX1.CSV", "PAL014H
                   "PAL356H1.CSV",   "PAL359H1.CSV",  "PAL362H1.CSV",   "PAL374HEX1.CSV", "PAL375H1.CSV",
                   "PAL378HEX1.CSV", "PAL379HEX1.CSV", "PAL382HEX1.CSV")
 
+<<<<<<< HEAD
 #set working directory to file where all DCM samples are stored
 setwd("~/CoralProject/2016 Raw Data/All DCM")
 
 #read in each dcm data file and store as a dataframe 
+=======
+#setwd("2016 Raw Data/All DCM")
+setwd("~/CoralProject/2016 Raw Data/ALL DCM")
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 PAL003DCM1 = read.csv(filenamesDCM[1],header=FALSE)
 PAL006DCM1 = read.csv(filenamesDCM[2],header=FALSE)
 PAL007DCM1 = read.csv(filenamesDCM[3],header=FALSE)
@@ -102,11 +113,21 @@ PAL378DCM1 = read.csv(filenamesDCM[46],header=FALSE)
 PAL379DCM1 = read.csv(filenamesDCM[47],header=FALSE)
 PAL382DCM1 = read.csv(filenamesDCM[48],header=FALSE)
 
+<<<<<<< HEAD
 
 #set working directory to file where all HEX samples are stored
 setwd("~/CoralProject/2016 Raw Data/All HEX")
 
 #read in each HEX data file and store as a dataframe 
+=======
+<<<<<<< HEAD
+#setwd("2016 Raw Data/All HEX")
+setwd("~/CoralProject/2016 Raw Data/ALL HEX")
+=======
+setwd("..")
+setwd("All HEX")
+>>>>>>> dd0a453aeb4d5d0f75ce0a8581e27bb2145a3f96
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 PAL001HEX1 = read.csv(filenamesHEX[1],header=FALSE)
 PAL003HEX1 = read.csv(filenamesHEX[2],header=FALSE)
 PAL007HEX1 = read.csv(filenamesHEX[3],header=FALSE)
@@ -863,7 +884,14 @@ for(i in c(35, 34, 23, 27)) {
   qqline(binned_matrix_HEX[,i])
 }
 
+<<<<<<< HEAD
 par(mfrow=c(1,1))
+=======
+correlation_1100 = cor(PC_HEX,binned_matrixHEX_1100)
+install.packages("corrplot", repos='http://cran.us.r-project.org')
+library(corrplot)
+corrplot(t(correlation_1100), method="color")
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 ```
 
 *LINEARITY ASSUMPTION?* 
@@ -900,6 +928,13 @@ points3D(PC_DCM[D,1],PC_DCM[D,2], PC_DCM[D,3], col="deeppink", add=TRUE)
 points3D(PC_DCM[T,1],PC_DCM[T,2], PC_DCM[T,3], col="grey", add=TRUE) 
 legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
 
+<<<<<<< HEAD
+=======
+correlation_2000 = cor(PC_HEX,binned_matrixHEX_2000)
+install.packages("corrplot", repos='http://cran.us.r-project.org')
+library(corrplot)
+corrplot(t(correlation_2000), method="color")
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 ```
 
 Note the nice separation between Clade F and Clade D given by the PCA plots, even using only the first two principal components. 
@@ -944,6 +979,13 @@ points(PC_HEX[D,1],PC_HEX[D,2],col="deeppink")
 points(PC_HEX[T,1],PC_HEX[T,2],col="grey")
 legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink","blue","grey"), pch=1,bty='o')
 
+<<<<<<< HEAD
+=======
+correlation_3000 = cor(PC_HEX,binned_matrixHEX_3000)
+install.packages("corrplot", repos='http://cran.us.r-project.org')
+library(corrplot)
+corrplot(t(correlation_3000), method="color")
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 ```
 
 We do not see the separation we would hope to using the Hexane samples. Note that we are dealing with a fairly small sample size (just 7 clade D samples and 18 clade F samples), and PCA may be sensitive to any outliers. 
@@ -962,7 +1004,21 @@ kable(corrHEX[1:3, 37:42], digits=3)
  
 We see that many bins correlate highly with our first principal component. 
 
+<<<<<<< HEAD
 \pagebreak
+=======
+#HEX:
+library(MASS)
+lda_info_HEX = lda(as.factor(dataframeHEX[,3])~binned_matrixHEX_1100)
+lda_info_HEX$scaling #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info_HEX,as.data.frame(binned_matrixHEX_1100))
+lda_info_pclass = predict(lda_info_HEX)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 
 **Cluster Analysis - Hierarchial Clustering**
 
@@ -994,6 +1050,7 @@ for(dist_method in dist_methods){
   }
 }
 
+<<<<<<< HEAD
 #incorporate clade and sample info to name matrix for cluster
 samplesHEX = rownames(binned_matrix_HEX[1:26,])
 cladesHEX = c(rep("F", 18), rep("D", 8))
@@ -1001,10 +1058,24 @@ for(j in 1:length(cladesHEX)){
   samplesHEX[j] = paste(cladesHEX[j], ".", samplesHEX[j],sep="")
 }
 colorCodes <- c(rep("deeppink", 18), rep("blue", 8))
+=======
+```{r}
+#DCM:
+lda_info = lda(as.factor(dataframe[,3])~binned_matrix_2000)
+lda_info$scaling  #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info,as.data.frame(binned_matrix_2000))
+lda_info_pclass = predict(lda_info)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 
 clust_HEX = binned_matrix_HEX[1:26,]
 rownames(clust_HEX) = samplesHEX
 
+<<<<<<< HEAD
 for(dist_method in dist_methods){
   for(clust_method in clust_methods){
     hcHEX = hclust(dist(clust_HEX, method=dist_method), method=clust_method)
@@ -1017,6 +1088,28 @@ for(dist_method in dist_methods){
     plot(dend, main=paste(clust_method, dist_method))
   }
 }
+=======
+clade.manova = manova(binned_matrix_2000~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+
+#HEX:
+library(MASS)
+lda_info_HEX = lda(as.factor(dataframeHEX[,3])~binned_matrixHEX_2000)
+lda_info_HEX$scaling #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info_HEX,as.data.frame(binned_matrixHEX_2000))
+lda_info_pclass = predict(lda_info_HEX)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova = manova(binned_matrix_2000~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 ```
 
 After trying all possible measures of distance and clustering techniques we see the neatest clusters from using euclidian distance with ward (ward.D minimizing within-cluster standard deviation) clustering for DCM and median clustering for HEX. 
@@ -1030,8 +1123,22 @@ for(j in 1:length(cladesDCM)){
 }
 colorCodes <- c(rep("blue", 23), rep("deeppink", 11))
 
+<<<<<<< HEAD
 clust_DCM = binned_matrix_DCM[1:34,]
 rownames(clust_DCM) = samplesDCM
+=======
+```{r}
+#DCM:
+lda_info = lda(as.factor(dataframe[,3])~binned_matrix_3000)
+lda_info$scaling  #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info,as.data.frame(binned_matrix_3000))
+lda_info_pclass = predict(lda_info)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 
 hcDCM = hclust(dist(clust_DCM, method="euclidian"), method="ward.D")
 colLab=c()
@@ -1042,6 +1149,31 @@ dend <- as.dendrogram(hcDCM)
 labels_colors(dend) <- colLab
 plot(dend, main="DCM Clustering Using Euclidian Distance and Ward Clustering")
 
+<<<<<<< HEAD
+=======
+clade.manova = manova(binned_matrix_3000~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+
+#HEX:
+library(MASS)
+lda_info_HEX = lda(as.factor(dataframeHEX[,3])~binned_matrixHEX_3000)
+lda_info_HEX$scaling #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info_HEX,as.data.frame(binned_matrixHEX_3000))
+lda_info_pclass = predict(lda_info_HEX)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova = manova(binned_matrix_3000~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+
+```
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 
 
 #incorporate clade and sample info to name matrix for cluster
@@ -1061,12 +1193,22 @@ Note: All but four of our clade D samples are clustered into one group. Samples 
 clust_HEX = binned_matrix_HEX[1:26,]
 rownames(clust_HEX) = samplesHEX
 
+<<<<<<< HEAD
 for(i in 1:length(hcHEX$order)){      
   colLab[i] = colorCodes[hcHEX$order[i]]
 }
 dend <- as.dendrogram(hcHEX)
 labels_colors(dend) <- colLab
 plot(dend, main="DCM Clustering Using Euclidian Distance and Median Clustering")
+=======
+```{r}
+binned_matrix_1100 = binner(dataframe[,1:47008],1100, DELTA)
+binned_matrix_1300 = binner(dataframe[,1:47008],1300, DELTA)
+binned_matrix_1500 = binner(dataframe[,1:47008],1500, DELTA)
+binned_matrix_1600 = binner(dataframe[,1:47008],1600, DELTA)
+binned_matrix_1800 = binner(dataframe[,1:47008],1800, DELTA)
+binned_matrix_2000 = binner(dataframe[,1:47008],2000, DELTA)
+>>>>>>> 0fb2ce569d2b93a724d815e5b80c291e573cd407
 ```
 
 Note: Half of our clade D samples are clustered into one group. Samples 299, 340, 252, and 355 remain outside this cluster.
