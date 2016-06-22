@@ -1,0 +1,134 @@
+---
+title: "LDA"
+author: "Jason"
+date: "June 20, 2016"
+output: pdf_document
+---
+
+**7. LDA - 22 Second Bin Width (1100 time points)**
+
+```{r}
+#DCM:
+library(MASS)
+lda_info = lda(as.factor(dataframe[,3])~binned_matrix_1100)
+lda_info$scaling #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info,as.data.frame(binned_matrix_1100))
+lda_info_pclass = predict(lda_info)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova = manova(binned_matrix_1100~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+
+#HEX:
+library(MASS)
+lda_info_HEX = lda(as.factor(dataframeHEX[,3])~binned_matrixHEX_1100)
+lda_info_HEX$scaling #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info_HEX,as.data.frame(binned_matrixHEX_1100))
+lda_info_pclass = predict(lda_info_HEX)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova = manova(binned_matrix_1100~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+
+```
+
+The Wilk's Lambda statistic corresponds to a p-value of ~.09, suggesting that the clades account for a large (but only marginally significant) proportion of the variance in binned area.
+
+**8. LDA - 40 Second Bin Width (2000 time points)**
+
+```{r}
+#DCM:
+lda_info = lda(as.factor(dataframe[,3])~binned_matrix_2000)
+lda_info$scaling  #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info,as.data.frame(binned_matrix_2000))
+lda_info_pclass = predict(lda_info)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 40 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova = manova(binned_matrix_2000~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+
+#HEX:
+library(MASS)
+lda_info_HEX = lda(as.factor(dataframeHEX[,3])~binned_matrixHEX_2000)
+lda_info_HEX$scaling #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info_HEX,as.data.frame(binned_matrixHEX_2000))
+lda_info_pclass = predict(lda_info_HEX)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova = manova(binned_matrix_2000~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+```
+
+The Wilk's Lambda statistic corresponds to a p-value of ~0.0008, suggesting that the clades account for a large, significant proportion of the variance in binned area.
+
+**9. LDA — 60 Second Bin Width (3000 time points)**
+
+```{r}
+#DCM:
+lda_info = lda(as.factor(dataframe[,3])~binned_matrix_3000)
+lda_info$scaling  #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info,as.data.frame(binned_matrix_3000))
+lda_info_pclass = predict(lda_info)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 60 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova = manova(binned_matrix_3000~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+
+#HEX:
+library(MASS)
+lda_info_HEX = lda(as.factor(dataframeHEX[,3])~binned_matrixHEX_3000)
+lda_info_HEX$scaling #Linear discriminant coefficient matrix
+lda_info_p = predict(lda_info_HEX,as.data.frame(binned_matrixHEX_3000))
+lda_info_pclass = predict(lda_info_HEX)$class
+par(mar=c(5,4,4,4))
+v = as.numeric(lda_info_pclass)
+v[which(v==1)] =  "deeppink"   #D
+v[which(v==2)] =  12           #F
+v[which(v==3)] =  "grey"       #Trochi
+
+plot(lda_info_p$x[,1],pch=16, col = v,main = "LDA - 22 Second Bin Width",xlab="df1",ylab="df2") #Plot the linear discriminants
+legend("topright",legend=c("S. glaucum clade D","S. glaucum clade F","S. trocheliophorum"),col=c("deeppink",12,"grey"), pch=16,bty='o')
+
+clade.manova = manova(binned_matrix_3000~as.factor(dataframe[,3]))
+clade.wilks = summary(clade.manova,test="Wilks");clade.wilks
+
+```
+
+The Wilk's Lambda statistic corresponds to a p-value of ~0, suggesting that the clades account for a large, significant proportion of the variance in binned area.
+\
+
